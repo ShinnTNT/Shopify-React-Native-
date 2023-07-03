@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COLOURS, Items } from "../database/Database";
@@ -39,6 +46,16 @@ const MyCart = ({ navigation }) => {
         getDataFromStorage();
       }
     }
+  };
+
+  const checkout = async () => {
+    try {
+      await AsyncStorage.removeItem("cartItems");
+    } catch (err) {
+      return err;
+    }
+    ToastAndroid.show("Items will be delivered SOON!", ToastAndroid.SHORT);
+    navigation.navigate("Home");
   };
 
   const renderProducts = (data, index) => {
@@ -198,6 +215,7 @@ const MyCart = ({ navigation }) => {
         width: "100%",
         height: "100%",
         backgroundColor: COLOURS.white,
+        position: "relative",
       }}
     >
       <ScrollView>
@@ -253,7 +271,321 @@ const MyCart = ({ navigation }) => {
         >
           {productList && productList.map(renderProducts)}
         </View>
+        <View>
+          <View
+            style={{
+              paddingHorizontal: 16,
+              marginVertical: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                color: COLOURS.black,
+                fontWeight: "500",
+                letterSpacing: 1,
+                marginBottom: 20,
+              }}
+            >
+              Delivery Location
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "80%",
+                  alignItems: "center",
+                }}
+              >
+                <View
+                  style={{
+                    color: COLOURS.blue,
+                    backgroundColor: COLOURS.backgroundLight,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 12,
+                    borderRadius: 10,
+                    marginRight: 18,
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="truck-delivery-outline"
+                    style={{
+                      fontSize: 18,
+                      color: COLOURS.blue,
+                    }}
+                  />
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: COLOURS.black,
+                      fontWeight: "500",
+                    }}
+                  >
+                    2 Petre MelikeiPos St.
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: COLOURS.black,
+                      fontWeight: "400",
+                      opacity: 0.5,
+                    }}
+                  >
+                    0162, Tbilisi
+                  </Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons
+                name="chevron-right"
+                style={{
+                  fontSize: 22,
+                  color: COLOURS.black,
+                }}
+              />
+            </View>
+          </View>
+
+          <View
+            style={{
+              paddingHorizontal: 16,
+              marginVertical: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                color: COLOURS.black,
+                fontWeight: "500",
+                letterSpacing: 1,
+                marginBottom: 20,
+              }}
+            >
+              Payment Method
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "80%",
+                  alignItems: "center",
+                }}
+              >
+                <View
+                  style={{
+                    color: COLOURS.blue,
+                    backgroundColor: COLOURS.backgroundLight,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 12,
+                    borderRadius: 10,
+                    marginRight: 18,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontWeight: "900",
+                      color: COLOURS.blue,
+                      letterSpacing: 1,
+                    }}
+                  >
+                    VISA
+                  </Text>
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: COLOURS.black,
+                      fontWeight: "500",
+                    }}
+                  >
+                    Visa Classic
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: COLOURS.black,
+                      fontWeight: "400",
+                      opacity: 0.5,
+                    }}
+                  >
+                    ****-9092
+                  </Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons
+                name="chevron-right"
+                style={{
+                  fontSize: 22,
+                  color: COLOURS.black,
+                }}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              paddingHorizontal: 16,
+              marginTop: 40,
+              marginBottom: 80,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                color: COLOURS.black,
+                fontWeight: "500",
+                letterSpacing: 1,
+                marginBottom: 20,
+              }}
+            >
+              Order Info
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 8,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "400",
+                  maxWidth: "80%",
+                  color: COLOURS.black,
+                  opacity: 0.5,
+                }}
+              >
+                Subtotal
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "400",
+                  maxWidth: "80%",
+                  color: COLOURS.black,
+                  opacity: 0.8,
+                }}
+              >
+                &#8377;{totalPrice}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 22,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "400",
+                  maxWidth: "80%",
+                  color: COLOURS.black,
+                  opacity: 0.5,
+                }}
+              >
+                Shipping Tax
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "400",
+                  maxWidth: "80%",
+                  color: COLOURS.black,
+                  opacity: 0.8,
+                }}
+              >
+                &#8377;{totalPrice / 20}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "400",
+                  maxWidth: "80%",
+                  color: COLOURS.black,
+                  opacity: 0.5,
+                }}
+              >
+                Total
+              </Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "500",
+                  maxWidth: "80%",
+                  color: COLOURS.black,
+                  opacity: 0.8,
+                }}
+              >
+                &#8377;{totalPrice + totalPrice / 20}
+              </Text>
+            </View>
+          </View>
+        </View>
       </ScrollView>
+
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          height: "8%",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => checkout()}
+          style={{
+            width: "86%",
+            height: "90%",
+            backgroundColor: COLOURS.blue,
+            borderRadius: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "500",
+              letterSpacing: 1,
+              color: COLOURS.white,
+              textTransform: "uppercase",
+            }}
+          >
+            Checkout ( &#8377;{totalPrice + totalPrice / 20})
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
